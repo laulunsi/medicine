@@ -1,0 +1,103 @@
+<!doctype html>  <!-- 声明文档类型-->
+<html>
+<head>
+    <!--声明当前页面的编码集：charset=gbk,gb2312(中文编码),utf-8国际编码-->
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+    <title>HTMl模板</title>
+    <meta name="Keyword" content="关键词,关键词">
+    <meta name="description" content="描述">
+    <!--样式-->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/customer.css">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="main" class="content clearfix">
+    <div class="main_left fl">
+        <ul class="main_left_ul">
+            <li>
+                <h3>购买药品</h3>
+                <div class="selectitem datadetail data1">
+                    <p class="selectitem selectmedicine">查看药品</p>
+                </div>
+            </li>
+            <li>
+                <h3>购买记录</h3>
+                <div class="datadetail data2">
+                    <p class="selectitem buymedicinelog">买货记录</p>
+                </div>
+            </li>
+            <li>
+                <h3>退货</h3>
+                <div class="datadetail data2">
+                    <p class="selectitem checkStorageLess">退货记录</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div id="app" class="main_right fl">
+        <div>
+            <table style="display:none;" v-show="show">
+                <thead>
+                <tr class="table_thead_tr">
+                    <th v-for="item in title">{{item}}</th>
+                    <th>购买量</th>
+                </tr>
+                </thead>
+                <tbody class="table_tbody">
+                    <tr v-for="item in data">
+                        <td v-for="item1 in item">{{item1}}</td>
+                        <td class="buy_medicine_num_td">
+                            <span class="num--">-</span>
+                            <input class="buy_medicine_num" type="text" value="0">
+                            <span class="numMore">+</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="display:none;" class="buyMedicine" v-show="show">
+                <textarea type="text" class="buy_memo" placeholder="留下您的备注，此项不是必填项"></textarea>
+                <div class="submit_buy_button">确认购买</div>
+            </div>
+            <table style="display:none;" v-show="buy">
+                <thead>
+                <tr class="table_thead_tr">
+                    <th v-for="item in title">{{item}}</th>
+                    <th>详细信息</th>
+                </tr>
+                </thead>
+                <tbody class="table_tbody">
+                <tr v-for="item in data">
+                    <td v-for="item1 in item">{{item1}}</td>
+                    <td class="buy_detail">
+                        点击查看详细信息
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table style="display:none;" v-show="buydetail">
+                <thead>
+                <tr class="table_thead_tr">
+                    <th v-for="item in title">{{item}}</th>
+                    <th>详细信息</th>
+                </tr>
+                </thead>
+                <tbody class="table_tbody">
+                <tr v-for="item in data">
+                    <td v-for="item1 in item">{{item1}}</td>
+                    <td class="buy_detail">
+                        点击查看详细信息
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="js/customer.js"></script>
+
+</body>
+</html>

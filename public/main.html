@@ -1,0 +1,132 @@
+<!doctype html>  <!-- 声明文档类型-->
+<html>
+<head>
+    <!--声明当前页面的编码集：charset=gbk,gb2312(中文编码),utf-8国际编码-->
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+    <title>HTMl模板</title> 
+    <meta name="Keyword" content="关键词,关键词">
+    <meta name="description" content="描述">
+    <!--样式-->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head> 
+<body>
+    <div id="main" class="content clearfix">
+        <div class="main_left fl">
+            <ul class="main_left_ul">
+                <li>
+                    <h3>基础数据维护</h3>
+                    <div class="selectitem datadetail data1">
+                        <p class="selectitem selectcustomer">用户和权限管理</p>
+                        <p class="selectitem selectmedicineinfo">药品信息管理</p>
+                        <p class="selectitem selectemployees">员工信息管理</p>
+                        <p class="selectitem selectsupplier">供应商信息管理</p>
+                        <p class="selectitem selectinstorage">登记入库的药品</p>
+                        <p class="selectitem selectoutstorage">登记出库的药品</p>
+                    </div>
+                </li>
+                <li>
+                    <h3>库存管理</h3>
+                    <div class="datadetail data2">
+                        <p class="selectitem checkStorageLess">检查库存下限</p>
+                        <p class="selectitem checkStorageDate">检查过期的药品,报警并做退回销毁处理</p>
+                        <p class="selectitem checkStorageProblem">对有问题的药品退回供应商</p>
+                    </div>
+                </li>
+                <li>
+                    <h3>销售管理</h3>
+                    <div class="datadetail data3">
+                        <p class="selectitem buymedicinelog">记录每次的销售行为</p>
+                        <p class="selectitem ">退货记录，原因</p>
+                    </div>
+                </li>
+                <li>
+                    <h3>汇总和统计</h3>
+                    <div class="datadetail data4">
+                        <p class="selectitem d4_selectsaleprice">每日销售情况,生成报表</p>
+                        <p class="selectitem d4_monthsaleprice">月终</p>
+                        <p class="selectitem d4_yearsaleprice">年终</p>
+                        <p class="selectitem d4_saledetail">查询销售明细</p>
+                    </div>
+                </li>
+                <li>
+                    <h3>查询</h3>
+                    <div class="datadetail data5">
+                        <p class="selectitem d5_selectmedcine">查询药品基本信息</p>
+                        <p class="selectitem d5_selectstorage">查询库存情况</p>
+                        <p class="selectitem d5_seleceguoqi">查询退回供应商的药品情况</p>
+                        <p class="selectitem d5_selectsupplier">供应商信息查询</p>
+                        <p class="selectitem d5_selectsupplierprice">与供应商往来账目查询</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="app" class="main_right fl">
+            <table style="display:none;" v-show="show">
+                <thead>
+                    <tr class="table_thead_tr">
+                        <th v-for="item in title">{{item}}</th>
+                    </tr>
+                </thead>
+                <tbody class="table_tbody">
+                    <tr v-for="item in data">
+                        <td v-for="item1 in item">{{item1}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="display:none;" id="selectcanDate" v-show="selectcanDate">
+                <table>
+                    <thead>
+                    <tr class="table_thead_tr">
+                        <th v-for="item in title">{{item}}</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table_tbody">
+                    <tr v-for="item in data">
+                        <td v-for="item1 in item">{{item1}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button id="submitDeleteCanDate">
+                    从库存中删除，并退回供应商
+                </button>
+            </div>
+            <div style="display:none;" id="instorage" v-show="instorageTable">
+                <form action="">
+                    药品编号: <input type="text" name="mid" class="ins_mid"> <br />
+                    批号: <input type="text" name="pihao" class="ins_pihao"> <br />
+                    进价: <input type="text" name="inprice" class="ins_inprice"> <br />
+                    供应商编号: <input type="text" name="sid" class="ins_sid"> <br />
+                    进货日期: <input type="text" name="instorageDate" class="ins_instorageDate"> <br />
+                    失效日期: <input type="text" name="failDate" class="ins_failDate"> <br />
+                    进货数量: <input type="text" name="instoragenum" class="ins_instoragenum"> <br />
+                    整量单位: <input type="text" name="allUnit" class="ins_allUnit"> <br />
+                    散量单位: <input type="text" name="oneUnit" class="ins_oneUnit"> <br />
+                </form>
+                <button class="submit_instorage">提交</button>
+            </div>
+            <div style="display:none;" id="outstorage" v-show="outstorageTable">
+                <form action="">
+                    药品编号: <input type="text" class="outs_mid">
+                    批号: <input type="text" class="outs_pihao">
+                    数量: <input type="text" class="outs_outstoragenum">
+                    出库日期: <input type="text" class="outs_outstorageDate">
+                </form>
+                <div class="submit_outstorage_div">
+                    <button class="submit_outstorage">确认出库</button>
+                </div>
+            </div>
+            <div style="display:none;" id="selectBuyInput" v-show="selectBuyInput">
+                请输入订单号： <input id="buyInput" type="text">
+                <button id="submitBuyInput">确定</button>
+            </div>
+        </div>
+    </div>
+
+
+<script src="js/main.js"></script>
+	
+</body>	
+</html>

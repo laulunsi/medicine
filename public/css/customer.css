@@ -1,0 +1,89 @@
+body{
+    user-select: none;
+}
+.content{
+    width:1240px;
+    margin:auto;
+}
+.main_left{
+    width:220px;
+}
+.main_right{
+    width:1000px;
+}
+.main_left_ul li{
+    margin:3px 0;
+    cursor:pointer;
+}
+.main_left_ul li:nth-child(1){
+    margin-top:0;
+    user-select: none;
+}
+.main_left_ul li .datadetail{
+    padding-left:20px;
+}
+.main_left h3{
+    font-weight:normal;
+    font-size:18px;
+    background:limegreen;
+    user-select:none;
+}
+.datadetail{
+    display:none;
+    user-select:none;
+}
+.show{
+    display:block;
+}
+.datadetail p{
+    cursor:pointer;
+}
+.datadetail p.active{
+    color:red;
+}
+
+.main_right table{
+    width:1000px;
+    margin:10px auto;
+}
+.main_right th{
+    border:1px solid;
+    height:40px;
+}
+.main_right td{
+    border:1px solid;
+    height:40px;
+    text-align:center;
+}
+.buy_medicine_num_td{
+    width:100px;
+}
+.buy_medicine_num_td span{
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+}
+.buy_medicine_num{
+    width:40px;
+    height:20px;
+    text-align:center;
+}
+.buyMedicine{
+    width:400px;
+    margin:auto;
+}
+.buy_memo{
+    width:400px;
+    height:100px;
+    padding-top:4px;
+    text-indent:10px;
+    font-size:16px;
+    color:#666;
+    resize:none;
+}
+.submit_buy_button{
+    cursor:pointer;
+}
+.buy_detail{
+    cursor:pointer;
+}

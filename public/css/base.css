@@ -1,0 +1,9 @@
+*{margin:0;padding:0;}
+i,em{font-style:normal;}
+table{border-collapse:collapse;}
+table th, table td{padding:0;}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+.fl{float:left;}
+.fr{float:right;}
+.clearfix:after{content:""; display:block; clear:both;}

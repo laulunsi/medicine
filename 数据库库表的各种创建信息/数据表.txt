@@ -1,0 +1,261 @@
+
+
+*******************************
+    药品信息
+{
+    mid 药品编号
+    mname 药品名称
+    cname 化学名称
+    mshotname 药品简称
+    mnors 规格
+    marea 药品产地
+    type  口服(koufu)/注射(zhushe)/处方(chufang)/非处方(nochuang) 只有这4种类型
+    sid 生产商编号
+    memo   备注
+}
+CREATE TABLE medicineInfo(
+    mid varchar(8) primary key,
+    mname varchar(40) not null,
+    cname varchar(64) ,
+    mshotname varchar(10),
+    mnors varchar(4),
+    marea varchar(40) not null,
+    type enum('koufu','zhushe','chufang','nochuang'),
+    sid varchar(8) not null,
+    memo varchar(100),
+    foreign key (sid) references supplier(sid)
+)ENGINE = InnoDB CHARSET = utf8;
+
+
+*******************************
+    供应商信息表
+{
+    sid 供应商编号
+    sname 供应商名称
+    speople 供应商联系人
+    scity 所在城市
+    sphone 联系方式
+}
+
+CREATE TABLE supplier(
+    sid varchar(8) primary key,
+    sname varchar(64) not null,
+    speople varchar(10) not null,
+    scity varchar(20) not null,
+    sphone varchar(20) not null
+)ENGINE = InnoDB CHARSET = utf8;
+
+
+*****************************************
+    员工表
+{
+    eid 员工编号
+    ename 员工姓名
+    esex 员工性别
+    ephone 员工电话
+    ecity 员工地址
+    eIdCard 员工身份证号
+    eposition 员工职位,
+    epass 员工密码
+    equanxian 员工权限
+    emome 备注
+}
+
+CREATE TABLE employees(
+    eid varchar(8) primary key,
+    ename varchar(20) not null,
+    esex enum('男','女') not null,
+    ephone varchar(12) not null,
+    ecity varchar(20) not null,
+    eIdCard varchar(30) not null,
+    eposition varchar(20) not null,
+    epass varchar(20) not null,
+    equanxian varchar(20) not null,
+    emome varchar(100)
+)ENGINE = InnoDB CHARSET = utf8;
+
+
+
+*********************************************
+    客户信息表
+{
+    cid 客户编号
+    cpeople 联系人
+    ccity 所在城市
+    cphone 联系方式
+    cpass 密码
+}
+
+CREATE TABLE customer(
+    cid varchar(20) primary key,
+    cpeople varchar(20) not null,
+    ccity varchar(64) not null,
+    cphone varchar(20) not null,
+    cpass varchar(20) not null
+)ENGINE = InnoDB CHARSET = utf8;
+
+**********************************************
+    药品销售单表
+
+{
+    saleid 销售单编号
+    cid 客户编号
+    saleprice 销售总额
+    saleDate 日期
+    saleDateMonth 销售月
+    slleDateYear 销售年
+    saleMemo 备注
+}
+CREATE TABLE sale(
+    saleid int(11) AUTO_INCREMENT primary key,
+    cid varchar(20) not null,
+    saleprice varchar(20) not null,
+    saleDate varchar(30) not null,
+    saleDateMonth varchar(30) not null,
+    saleDateYear varchar(30) not null,
+    saleMemo varchar(100),
+    foreign key (cid) references customer(cid)
+        on update cascade
+)ENGINE = InnoDB CHARSET = utf8;
+
+****************************************
+    药品销售明细表
+{
+    saledetailsid 销售单表编号
+    mid 药品编号
+    saledetailsnum 数量
+    saledetailprice 单价
+}
+CREATE TABLE saledetails(
+    saledetailsid int(11) AUTO_INCREMENT primary key,
+    saleid int(11) not null,
+    mid varchar(8) not null,
+    saledetailnum int(10) not null,
+    saledetailprice varchar(20) not null,
+    foreign key (mid) references medicineinfo(mid)
+        on update cascade,
+    foreign key (saleid) references sale(saleid)
+        on update cascade
+)ENGINE = InnoDB CHARSET = utf8;
+
+*******************************************
+    药品入库表
+{
+    入库单号
+    药品编号
+    批号
+    进价
+                            批发价
+                            零售价
+    供应商
+    入库日期
+    失效日期
+    数量
+    整量单位
+    散量单位
+    验收入
+}
+
+CREATE TABLE instorage(
+    instorageid int(11) AUTO_INCREMENT,
+    mid varchar(8) not null,
+    pihao varchar(10) not null,
+    inprice int(11) not null,
+    sid varchar(8) not null,
+    instorageDate varchar(64) not null,
+    failDate varchar(64) not null,
+    instoragenum int(11) not null,
+    allUnit varchar(20),
+    oneUnit varchar(20),
+    primary key (insorageid),
+    foreign key (mid) references medicineInfo(mid)
+        on update cascade,
+    foreign key (sid) references supplier(sid)
+            on update cascade
+)ENGINE = InnoDB CHARSET = utf8;
+
+
+*********************************************
+    药品库存表
+{
+    库存号
+    药品编号
+    批号
+    数量
+    整量单位
+    散量单位
+    入库日期
+    有效日期
+    进价
+    预售价
+    库存下限
+    验收入
+}
+CREATE TABLE storage(
+    storageid int(11) AUTO_INCREMENT,
+    mid varchar(8) not null,
+    pihao varchar(10) not null,
+    storagenum int(11) not null,
+    allUnit varchar(20),
+    oneUnit varchar(20),
+    instorageDate varchar(64) not null,
+    canDate varchar(64) not null,
+    inprice int(11) not null,
+    salePrice int(11) not null,
+    storageLessNum int(11) not null,
+    primary key (storageid),
+    foreign key (mid) references medicineInfo(mid)
+        on update cascade
+)ENGINE = InnoDB CHARSET = utf8;
+
+*************************************
+    药品出库表
+{
+    出库单号
+    药品编号
+    批号
+    数量
+    出库日期
+    验收入
+}
+CREATE TABLE outstorage(
+    outstorageid int(11) AUTO_INCREMENT,
+    mid varchar(8) not null,
+    pihao varchar(10) not null,
+    storagenum int(11) not null,
+    outstorageDate varchar(64) not null,
+    primary key (outstorageid),
+    foreign key (mid) references medicineInfo(mid)
+        on update cascade
+)ENGINE = InnoDB CHARSET = utf8;
+
+
+/*************************
+过期退回供应商表
+{
+
+}
+CREATE TABLE guoqi(
+    guoqiid int(11) AUTO_INCREMENT,
+    storageid int(11),
+    mid varchar(8) not null,
+    pihao varchar(10) not null,
+    storagenum int(11) not null,
+    instorageDate varchar(64) not null,
+    canDate varchar(64) not null,
+    inprice int(11) not null,
+    salePrice int(11) not null,
+    storageLessNum int(11) not null,
+    primary key (guoqiid)
+)ENGINE = InnoDB CHARSET = utf8;
+
+
+
+
+
+1. 登记完入库信息之后  要更新库存量
+2. 登记完出库信息之后  要更新库存量
+
+
+
+
